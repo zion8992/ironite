@@ -1,0 +1,26 @@
+# Setup Database
+
+```sql
+DROP TABLE IF EXISTS servers;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  session_token VARCHAR(255) NULL,
+  session_token_expires TIMESTAMP NULL
+);
+
+CREATE TABLE servers (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  xml_feed_link TEXT,
+  playercount BIGINT UNSIGNED NOT NULL DEFAULT 0,
+  owner_id BIGINT UNSIGNED NOT NULL,
+  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```

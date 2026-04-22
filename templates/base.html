@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cubyz Server List</title>
+    <link rel="stylesheet" href="/static/base.css">
+    <link rel="stylesheet" href="/static/dark.css">
+</head>
+<body>
+    <header>
+        <div class="name">
+            <a href="/" style="text-decoration: none;"><h1 class="special-font">Ironite</h1></a>
+        </div>
+        <nav>
+            <a href="/" class="nav-btn">List</a>
+            {{ if .IsLoggedIn }}
+            <a href="/account" class="nav-btn">Account</a>
+            {{ else }}
+            <a href="/login" class="nav-btn">Log in</a>
+            {{ end}}
+            <a href="/info" class="nav-btn">Information</a>
+        </nav>
+    </header>
+    
+    <main>
+        {{ template "content" . }}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Ironite</p>
+    </footer>
+</body>
+</html>

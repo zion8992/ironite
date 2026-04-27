@@ -7,6 +7,24 @@ import (
 	"time"
 )
 
+/** This file contains:
+--- Users ---
+- create user (u User) (id int64, error error)
+- get user (uid uint64) returns a *User, error
+- update user (u User) error
+- delete user (uid uint64) error
+- get servers by user (uid uint64) returns []Server, error
+
+--- Passwords ---
+- hash password (password string) returns string, error
+- check password (hash, password string) bool
+
+--- Session Tokens ---
+- generate session token () returns string, error
+- set session token (uid uint64, token string, expires time.Time) error
+- check session token (uid uint64, token string) returns bool, error
+**/
+
 /** USERS **/
 
 func (a *App) CreateUser(u User) (int64, error) {

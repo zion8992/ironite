@@ -39,7 +39,25 @@ func (a *App) SlashHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := Page{
-		IsLoggedIn: true,
+		IsLoggedIn: false,
+	}
+
+	if err := tmpl.Execute(w, data); err != nil {
+		a.Error(w, r, "template execution failed: ", err.Error())
+	}
+}
+
+func (a *App) LoginGET(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles(
+		"./templates/base.html",
+		"./templates/auth/login.html",
+	)
+	if err != nil {
+		a.Error(w, r, fmt.Sprintf("failed to load template: %v (templates/auth/login.html)", err))
+	}
+
+	data := Page{
+		IsLoggedIn: false,
 	}
 
 	if err := tmpl.Execute(w, data); err != nil {

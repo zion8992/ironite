@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"fmt"
 )
 
 type App struct {
@@ -21,6 +22,10 @@ func main() {
 
 	staticFS := http.FileServer(http.Dir("./static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", staticFS))
+	
+	// auth
+	mux.HandleFunc("/login", app.LoginGET)
+
 
 	// semi-static pages
 	mux.HandleFunc("/", app.SlashHandler)
@@ -36,13 +41,13 @@ func main() {
 func NewApp() *App {
 	db, err := sql.Open("mysql", "root:H0EeLfLnO,xDEVELOPERSx4c!#%@tcp(127.0.0.1:3306)/ironite")
 	if err != nil {
+		fmt.Printf("%s\n", "Failed to connect to database!")
 		panic(err)
-		os.Exit(1)
 	}
 
 	if err := db.Ping(); err != nil {
+		fmt.Printf("%s\n", "Failed to ping to database!")
 		panic(err)
-		os.Exit(1)
 	}
 
 	a := &App{

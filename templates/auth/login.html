@@ -1,0 +1,47 @@
+{{ define "content" }}
+
+<div class="center-me-pls">
+    <h2>Login</h2>
+    <!-- this form uses the publicly available API for creating accounts -->
+    <form action="/api/v1/auth/register" method="post">
+        <input type="text" name="username" placeholder="Username" required /> <br>
+        <input type="text" name="email" placeholder="Email" required /> <br>
+        <input type="password" name="password" placeholder="Secure Password" required /> <br>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<p id="pass-status"></p>
+
+<script>
+const passwordInput = document.querySelector('input[name="password"]');
+const status = document.getElementById('pass-status');
+
+passwordInput.addEventListener('input', () => {
+    const val = passwordInput.value;
+
+    const lengthOK = val.length >= 11;
+    const upper = (val.match(/[A-Z]/g) || []).length;
+    const lower = (val.match(/[a-z]/g) || []).length;
+    const symbols = (val.match(/[^A-Za-z0-9]/g) || []).length;
+    const numbers = (val.match(/[0-9]/g) || []).length;
+
+    const groups = [
+        upper >= 2,
+        lower >= 2,
+        symbols >= 2
+    ].filter(Boolean).length;
+
+    const groupsOK = groups >= 2;
+    const numbersOK = numbers >= 4;
+
+    if (lengthOK && groupsOK && numbersOK) {
+        status.textContent = "Strong password";
+        status.style.color = "green";
+    } else {
+        status.textContent = "Password must:\n- be 11+ chars\n- have 2 upper case letters, lower case letters, symbols and 4 numbers";
+        status.style.color = "red";
+    }
+});
+</script>
+{{ end }}

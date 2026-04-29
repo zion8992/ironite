@@ -13,6 +13,7 @@ import (
 type App struct {
 	Log *slog.Logger
 	DB  *sql.DB
+	BlockedWords string
 }
 
 func main() {
@@ -24,7 +25,10 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", staticFS))
 	
 	// auth
-	mux.HandleFunc("/login", app.LoginGET)
+	mux.HandleFunc("/register", app.RegisterGET)
+
+	// api v1
+	mux.HandleFunc("/api/v1/auth/register", app.APIv1_RegisterPost)
 
 
 	// semi-static pages

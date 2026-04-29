@@ -17,7 +17,7 @@
     --bg: hsl(200 13.2% 19.6%);
     --color: hsl(200 100% 92.5%);
     --header-color: hsl(200 14.4% 35.4%);
-    --border-radius: 0px;
+    --border-radius: 5px;
 }
 
 /** FONTS **/

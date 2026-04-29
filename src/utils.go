@@ -2,8 +2,10 @@ package main
 
 import(
 	"fmt"
-	"strings"
 	"net/http"
+	"errors"
+	"regexp"
+	"strings"
 )
 
 func (a *App) Error(w http.ResponseWriter, r *http.Request, errs ...string) {
@@ -17,4 +19,63 @@ func (a *App) Error(w http.ResponseWriter, r *http.Request, errs ...string) {
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusInternalServerError)
 	fmt.Fprintf(w, "Error: %s", msg)
+}
+
+func (a *App) ValidateFormFields(username, password, email string) (bool, error) {
+	// Username:
+	// - ASCII only
+	// - No spaces, quotes, slashes/backslashes
+	usernameRegex := regexp.MustCompile(`^[\x21\x23-\x26\x28-\x2E\x30-\x39\x3A-\x7E]+$`)
+	// excludes: space (0x20), " (0x22), ' (0x27), / (0x2F), \ (0x5C)
+
+	if !usernameRegex.MatchString(username) {
+		return false, errors.New("invalid username format")
+	}
+
+	// Password:
+	// - min 11 chars
+	// - at least 2 uppercase
+	// - at least 4 digits
+	// - at least 1 lowercase
+	// - at least 1 symbol
+	// - no / or \
+	if len(password) < 11 {
+		return false, errors.New("invalid password format")
+	}
+
+	var upper, lower, digit, symbol int
+
+	for _, c := range password {
+		switch {
+		case c == '/' || c == '\\':
+			return false, errors.New("invalid password format")
+		case 'A' <= c && c <= 'Z':
+			upper++
+		case 'a' <= c && c <= 'z':
+			lower++
+		case '0' <= c && c <= '9':
+			digit++
+		default:
+			symbol++
+		}
+	}
+
+	if upper < 2 || lower < 1 || digit < 4 || symbol < 1 {
+		return false, errors.New("invalid password format")
+	}
+
+	// Email:
+	// - no spaces or backslashes before @
+	// - simple <abc>@<whatever>.<domain>
+	emailRegex := regexp.MustCompile(`^[^\\\s@]+@[^@\s]+\.[^@\s]+$`)
+
+	if !emailRegex.MatchString(email) {
+		return false, errors.New("invalid email format")
+	}
+
+	return true, nil
+}
+
+func (a App) WantsJson(r *http.Request) bool {
+	return strings.Contains(r.Header.Get("Accept"), "application/json")
 }

@@ -15,6 +15,9 @@ type Page struct {
 
 	// Theming
 	//Theme string // "light" or "dark"
+
+	// Errors
+	FailMessage string
 }
 
 func (a *App) SlashHandler(w http.ResponseWriter, r *http.Request) {
@@ -47,10 +50,10 @@ func (a *App) SlashHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (a *App) LoginGET(w http.ResponseWriter, r *http.Request) {
+func (a *App) RegisterGET(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles(
 		"./templates/base.html",
-		"./templates/auth/login.html",
+		"./templates/auth/register.html",
 	)
 	if err != nil {
 		a.Error(w, r, fmt.Sprintf("failed to load template: %v (templates/auth/login.html)", err))

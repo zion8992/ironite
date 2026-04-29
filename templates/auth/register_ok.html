@@ -1,0 +1,10 @@
+{{ define "content" }}
+<div class="center-me-pls">
+    {{ if .FailMessage }}
+    <p class="error">{{ .FailMessage }}</p>
+    {{ else }}
+    <h2>Register success!</h2><br><br>
+    <p>Please <a href="/login">login</a> now</p>
+    {{ end }}
+</div>
+{{ end }}

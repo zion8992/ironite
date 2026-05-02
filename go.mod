@@ -1,6 +1,6 @@
 module github.com/zion8992/ironite
 
-go 1.26.1
+go 1.26.2
 
 require (
 	github.com/go-sql-driver/mysql v1.9.3

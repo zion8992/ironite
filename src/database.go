@@ -14,10 +14,13 @@ import (
 - update user (u User) error
 - delete user (uid uint64) error
 - get servers by user (uid uint64) returns []Server, error
+- check if user exists (id uint64) returns bool, error
+- get user id by username (username string) returns uint64, error
 
 --- Passwords ---
 - hash password (password string) returns string, error
 - check password (hash, password string) bool
+- check password with db (uint64, password) returns bool, error
 
 --- Session Tokens ---
 - generate session token () returns string, error
@@ -106,6 +109,36 @@ func (a *App) GetServersByUser(userID uint64) ([]Server, error) {
 	return servers, nil
 }
 
+func (a *App) UserExists(id uint64) (bool, error) {
+	var exists bool
+
+	err := a.DB.QueryRow(
+		"SELECT EXISTS(SELECT 1 FROM users WHERE id=?)",
+		id,
+	).Scan(&exists)
+
+	if err != nil {
+		return false, err
+	}
+
+	return exists, nil
+}
+
+func (a *App) GetUserIDByUsername(username string) (uint64, error) {
+	var id uint64
+
+	err := a.DB.QueryRow(
+		"SELECT id FROM users WHERE username=?",
+		username,
+	).Scan(&id)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
+
 /** PASSWORDS **/
 
 func (a *App) HashPassword(password string) (string, error) {
@@ -113,8 +146,37 @@ func (a *App) HashPassword(password string) (string, error) {
 	return string(b), err
 }
 
-func (a *App) CheckPassword(hash, password string) bool {
-	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) == nil
+func (a *App) CheckPassword(hash, password string) (bool, error) {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func (a *App) CheckPasswordDB(userID uint64, password string) (bool, error) {
+	var hash string
+
+	err := a.DB.QueryRow(
+		"SELECT password FROM users WHERE id=?",
+		userID,
+	).Scan(&hash)
+
+	if err != nil {
+		return false, err
+	}
+
+	ok, e := a.CheckPassword(hash, password)
+	if err != nil {
+		return false, e
+	}
+
+	if !ok {
+		return false, nil
+	}
+
+	return true, nil
 }
 
 /** SESSION TOKENS **/

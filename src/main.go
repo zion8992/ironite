@@ -8,12 +8,14 @@ import (
 	"net/http"
 	"os"
 	"fmt"
+	"time"
 )
 
 type App struct {
 	Log *slog.Logger
 	DB  *sql.DB
 	BlockedWords string
+	DefaultExpiry time.Duration
 }
 
 func main() {
@@ -25,10 +27,11 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", staticFS))
 	
 	// auth
-	mux.HandleFunc("/register", app.RegisterGET)
+	mux.HandleFunc("GET /register", app.RegisterGET)
+	mux.HandleFunc("POST /register", app.RegisterPOST)
 
-	// api v1
-	//mux.HandleFunc("/api/v1/auth/hi", app.APIv1_Hi)
+	mux.HandleFunc("GET /login", app.LoginGET)
+	mux.HandleFunc("POST /login", app.LoginPOST)
 
 
 	// semi-static pages
@@ -57,6 +60,7 @@ func NewApp() *App {
 	a := &App{
 		Log: slog.New(slog.NewTextHandler(os.Stderr, nil)),
 		DB:  db,
+		DefaultExpiry: 4 * time.Hour,
 	}
 
 	return a

@@ -79,3 +79,17 @@ func (a *App) ValidateFormFields(username, password, email string) (bool, error)
 func (a App) WantsJson(r *http.Request) bool {
 	return strings.Contains(r.Header.Get("Accept"), "application/json")
 }
+
+func (a *App) HasSessionToken(r *http.Request) bool {
+	cookie, err := r.Cookie("session_token")
+	if err != nil {
+		return false
+	}
+
+	// optional: also ensure it's not empty
+	if cookie.Value == "" {
+		return false
+	}
+
+	return true
+}

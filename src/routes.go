@@ -87,16 +87,9 @@ func (a *App) RegisterPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var passHash string
-	passHash, err = a.HashPassword(r.FormValue("password"))
-	if err != nil {
-		a.Error(w, r, "Failed to hash password! ", err.Error())
-		return
-	}
-
 	u := User {
 		Username: r.FormValue("username"),
-		Password: passHash,
+		Password: r.FormValue("password"),
 		Email: r.FormValue("email"),
 	}
 

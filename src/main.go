@@ -28,7 +28,7 @@ func main() {
 	mux.HandleFunc("/register", app.RegisterGET)
 
 	// api v1
-	mux.HandleFunc("/api/v1/auth/register", app.APIv1_RegisterPost)
+	//mux.HandleFunc("/api/v1/auth/hi", app.APIv1_Hi)
 
 
 	// semi-static pages

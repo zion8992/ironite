@@ -93,3 +93,37 @@ func (a *App) HasSessionToken(r *http.Request) bool {
 
 	return true
 }
+
+func (a *App) CheckReqSessionTok(r *http.Request) (bool, error) {
+	cookie, err := r.Cookie("session_token")
+
+	if err != nil {
+		return false, errors.New("Failed to check the session token in your HTTP request: "+ err.Error()) 
+	}
+
+	if cookie.Value == "" {
+		return false, errors.New("Failed to check the session token in your HTTP request: empty cookie value")
+	}
+
+	var uid uint64
+	uid, err = a.GetUIDFromToken(cookie.Value)
+	if err != nil {
+		return false, errors.New("Failed to get the username from your session token: "+ err.Error())
+	}
+
+	if uid == 0 {
+		return false, errors.New("Failed to get the username from your session token: uid is 0")
+	}
+
+	var ok bool
+	ok, err = a.CheckSessionToken(uid, cookie.Value)
+	if err != nil {
+		return false, errors.New("Failed to check if the session token in your HTTP request is valid: "+ err.Error())
+	}
+
+	if ok {
+		return true, nil
+	}
+
+	return false, nil
+}

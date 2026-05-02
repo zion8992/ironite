@@ -46,7 +46,7 @@ func main() {
 }
 
 func NewApp() *App {
-	db, err := sql.Open("mysql", "root:H0EeLfLnO,xDEVELOPERSx4c!#%@tcp(127.0.0.1:3306)/ironite")
+	db, err := sql.Open("mysql", "root:H0EeLfLnO,xDEVELOPERSx4c!#%@tcp(127.0.0.1:3306)/ironite?parseTime=true")
 	if err != nil {
 		fmt.Printf("%s\n", "Failed to connect to database!")
 		panic(err)

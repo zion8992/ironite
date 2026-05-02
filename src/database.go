@@ -5,6 +5,8 @@ import (
 	"encoding/hex"
 	"golang.org/x/crypto/bcrypt"
 	"time"
+	"strconv"
+	"errors"
 )
 
 /** This file contains:
@@ -26,6 +28,7 @@ import (
 - generate session token () returns string, error
 - set session token (uid uint64, token string, expires time.Time) error
 - check session token (uid uint64, token string) returns bool, error
+- get username from session token (token string) returns string, error
 **/
 
 /** USERS **/
@@ -216,4 +219,27 @@ func (a *App) CheckSessionToken(userID uint64, token string) (bool, error) {
 	}
 
 	return time.Now().Before(expires), nil
+}
+
+func (a *App) GetUIDFromToken(sessionToken string) (uint64, error) {
+	var uid string // converted to uint64 on at the bottom
+
+	err := a.DB.QueryRow(
+		`select id from users where session_token=?;`,
+		sessionToken,
+	).Scan(&uid)
+
+	if err != nil {
+		return 0, err
+	}
+
+	// conversions
+	var converted int
+	converted, err = strconv.Atoi(uid)
+	if err != nil {
+		return 0, errors.New("failed to convert uid to an int64: "+err.Error())
+	}
+
+	// conversions #2
+	return uint64(converted), nil
 }

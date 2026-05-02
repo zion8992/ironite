@@ -17,6 +17,9 @@ type Page struct {
 
 	// Theming
 	//Theme string // "light" or "dark"
+
+	// Errors
+	Err string
 }
 
 func (a *App) SlashHandler(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +42,7 @@ func (a *App) SlashHandler(w http.ResponseWriter, r *http.Request) {
 	path := "./templates/" + page + ".html"
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		a.Error(w, r, "404: Page not found! "+path)
+		a.Return404(w, r,)
 		return
 	}
 

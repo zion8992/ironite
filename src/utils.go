@@ -6,6 +6,7 @@ import(
 	"errors"
 	"regexp"
 	"strings"
+	"html/template"
 )
 
 func (a *App) Error(w http.ResponseWriter, r *http.Request, errs ...string) {
@@ -16,9 +17,24 @@ func (a *App) Error(w http.ResponseWriter, r *http.Request, errs ...string) {
 		"errors", msg,
 	)
 
-	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(http.StatusInternalServerError)
-	fmt.Fprintf(w, "Error: %s", msg)
+
+	tmpl, err := template.ParseFiles(
+		"./templates/base.html",
+		"./templates/error.html",
+	)
+	if err != nil {
+		fmt.Fprintf(w, "Failed to load ./templates/error.html! File not found")
+	}
+
+	data := Page{
+		Err: msg,
+	}
+
+	if err := tmpl.Execute(w, data); err != nil {
+		fmt.Fprintf(w, "Failed to render template: %s\n", err.Error())
+	}
 }
 
 func (a *App) ValidateFormFields(username, password, email string) (bool, error) {
@@ -76,8 +92,22 @@ func (a *App) ValidateFormFields(username, password, email string) (bool, error)
 	return true, nil
 }
 
-func (a App) WantsJson(r *http.Request) bool {
-	return strings.Contains(r.Header.Get("Accept"), "application/json")
+func (a App) Return404(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles(
+		"./templates/base.html",
+		"./templates/404.html",
+	)
+	if err != nil {
+		a.Error(w, r, fmt.Sprintf("failed to load template: %v (templates/404.html)", err))
+	}
+
+	data := Page{
+		IsLoggedIn: a.HasSessionToken(r),
+	}
+
+	if err := tmpl.Execute(w, data); err != nil {
+		a.Error(w, r, "template execution failed: ", err.Error())
+	}
 }
 
 func (a *App) HasSessionToken(r *http.Request) bool {

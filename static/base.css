@@ -18,6 +18,12 @@
     --color: hsl(200 100% 92.5%);
     --header-color: hsl(200 14.4% 35.4%);
     --border-radius: 5px;
+    --box-shadow-i: inset 2px 2px 2px 2px var(--a);
+    --box-shadow: 2px 2px 2px var(--darker);
+    --font-size: 21px;
+    --event: hsl(267 100% 63.2%);
+    --btn-color: hsl(200 14.4% 25%);
+    --bnt-border: hsl(200 14.4% 31.1%);
 }
 
 /** FONTS **/
@@ -29,13 +35,15 @@
 
 /** GENERAL ELEMENTS **/
 
+/* Available fonts are "Google Sans Code" and "Unscii 16 Full" (cubyz) */
 body {
-    font-family: "Google Sans Code", monospace;
+    font-family: "Unscii 16 Full", monospace;
     background-color: var(--bg);
     color: var(--color);
     justify-content: center;  /* vertical center */
     align-items: center;      /* horizontal center */
     text-align: center;
+    font-size: var(--font-size);
 }
 
 /* --- HEADER --- */
@@ -47,6 +55,7 @@ header {
     background-color: var(--header-color);
     height: 70px;
     border-bottom: 2px solid var(--a);
+    box-shadow: var(--box-shadow-i);
 }
 
 header nav {
@@ -61,14 +70,16 @@ header nav {
 }
 
 header nav a {
-    font-size: 20px;
+    font-size: 24px;
     text-decoration: none;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
 }
 
 
 main {
     margin-top: 50px;
-    left: 60px;
+    margin-left: 120px;
 }
 
 footer {
@@ -114,76 +125,19 @@ input:focus {
     outline: none;
 }
 
-/**
 button {
-    padding: 7px;
-    max-width: 800px;
+    padding: 8px 20px 8px 20px;
     background-color: var(--a);
-    border: none;
-    border-radius: var(--border-radius);
+    font-family: "Unscii 16 Full";
+    font-size: 18px;
     cursor: pointer;
+    color: var(--btn-color);
+    border: 2px solid var(--bnt-border);
+    border-radius: var(--border-radius);
 }
 
 button:hover {
     background-color: var(--darker);
-}
-*/
-
-button {
-  appearance: none;
-  background-color: #FAFBFC;
-  border: 1px solid rgba(27, 31, 35, 0.15);
-  border-radius: 6px;
-  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset;
-  box-sizing: border-box;
-  color: #24292E;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  list-style: none;
-  padding: 6px 16px;
-  position: relative;
-  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: middle;
-  white-space: nowrap;
-  word-wrap: break-word;
-}
-
-button:hover {
-  background-color: #F3F4F6;
-  text-decoration: none;
-  transition-duration: 0.1s;
-}
-
-button:disabled {
-  background-color: #FAFBFC;
-  border-color: rgba(27, 31, 35, 0.15);
-  color: #959DA5;
-  cursor: default;
-}
-
-button:active {
-  background-color: #EDEFF2;
-  box-shadow: rgba(225, 228, 232, 0.2) 0 1px 0 inset;
-  transition: none 0s;
-}
-
-button:focus {
-  outline: 1px transparent;
-}
-
-button:before {
-  display: none;
-}
-
-button:-webkit-details-marker {
-  display: none;
 }
 
 form {
@@ -202,22 +156,23 @@ form > * {
 }
 
 .server {
-    margin: 5px;
     background-color: var(--header-color);
     padding: 15px;
     border-radius: var(--border-radius);
     display: flex;
     flex-direction: row;
-    max-width: 560px;
-}
-
-.server * {
-    margin: 5px;
+    max-width: 500px;
+    max-height: 200px;
+    margin: 10px;
 }
 
 .server h2 {
     font-family: "Unscii 16 Full", monospace;
     font-size: 28px;
+}
+
+.server * {
+    margin: 5px;
 }
 
 .server img {
@@ -231,12 +186,31 @@ form > * {
     flex: 2;
 }
 
-/* DO NOT REMOVE THIS CLASS */
-/* DO NOT REMOVE THIS CLASS */
+.servers_list {
+    display: flex;
+}
+
+.servers {
+    flex: 2;
+}
+
+.filters {
+    flex: 1;
+    height: 1200px;
+    background-color: var(--header-color);
+    border-radius: var(--border-radius);
+    max-width: 350px;
+    padding: 50px;
+}
+
+.event {
+    background-color: var(--event);
+    padding: 10px;
+    border-radius: var(--border-radius);
+}
+
 .center-me-pls {
     justify-content: center;  /* vertical center */
     align-items: center;      /* horizontal center */
     text-align: center;
 }
-/* DO NOT REMOVE THIS CLASS */
-/* DO NOT REMOVE THIS CLASS */

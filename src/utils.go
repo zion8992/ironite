@@ -128,7 +128,14 @@ func (a *App) CheckReqSessionTok(r *http.Request) (bool, error) {
 	cookie, err := r.Cookie("session_token")
 
 	if err != nil {
-		return false, errors.New("Failed to check the session token in your HTTP request: "+ err.Error()) 
+		if errors.Is(err, http.ErrNoCookie) {
+			return false, nil
+		}
+
+		return false, fmt.Errorf(
+			"failed to check the session token in your HTTP request: %w",
+			err,
+		)
 	}
 
 	if cookie.Value == "" {

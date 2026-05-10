@@ -23,17 +23,6 @@ type Page struct {
 }
 
 func (a *App) SlashHandler(w http.ResponseWriter, r *http.Request) {
-	ok, err := a.CheckReqSessionTok(r)
-	if err!= nil {
-		a.Error(w, r, err.Error())
-		return
-	}
-
-	if !ok {
-		a.Error(w, r, "Invalid Session Token")
-		return
-	}
-
 	page := strings.TrimPrefix(r.URL.Path, "/")
 	if page == "" {
 		page = "home"

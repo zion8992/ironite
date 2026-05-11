@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght,MONO@0,300..800,1;1,300..800,1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source%20Code%20Pro:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/** LIGHT/DARK MODE IMPORTS **/
+@import url('/static/dark.css') (prefers-color-scheme: dark);
+@import url('/static/light.css') (prefers-color-scheme: light);
+
 /** RESET THE FUCKING BROWSER CSS **/
 * {
     margin: 0;
@@ -9,21 +13,12 @@
 }
 
 /** ROOT VARIABLES **/
-
-
 :root {
-    --a: hsl(200 100% 63.2%);
-    --darker: hsl(200, 58%, 49%);
-    --bg: hsl(200 13.2% 19.6%);
-    --color: hsl(200 100% 92.5%);
-    --header-color: hsl(200 14.4% 35.4%);
-    --border-radius: 5px;
-    --box-shadow-i: inset 2px 2px 2px 2px var(--a);
-    --box-shadow: 2px 2px 2px var(--darker);
-    --font-size: 21px;
-    --event: hsl(267 100% 63.2%);
-    --btn-color: hsl(200 14.4% 25%);
-    --bnt-border: hsl(200 14.4% 31.1%);
+    --border-radius: 0px;
+    --font-size: 16px;
+    --box-shadow-3d: 0 4px 0 var(--button-shadow), 0 6px 8px rgba(0, 0, 0, 0.3);
+    --box-shadow-3d-hover: 0 6px 0 var(--button-shadow), 0 8px 12px rgba(0, 0, 0, 0.4);
+    --box-shadow-3d-active: 0 0 0 var(--button-shadow), 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /** FONTS **/
@@ -40,10 +35,16 @@ body {
     font-family: "Unscii 16 Full", monospace;
     background-color: var(--bg);
     color: var(--color);
-    justify-content: center;  /* vertical center */
-    align-items: center;      /* horizontal center */
     text-align: center;
     font-size: var(--font-size);
+    background-image:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(134, 77, 24, 0.03) 2px,
+            rgba(134, 77, 24, 0.03) 4px
+        );
 }
 
 /* --- HEADER --- */
@@ -54,99 +55,197 @@ header {
     padding: 1rem 2rem;
     background-color: var(--header-color);
     height: 70px;
-    border-bottom: 2px solid var(--a);
-    box-shadow: var(--box-shadow-i);
+    border-bottom: 4px solid var(--primary-brown);
+}
+
+header .name h1 {
+    font-size: 32px;
+    font-family: "Unscii 16 Full", monospace;
+    color: var(--color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 2px;
 }
 
 header nav {
     display: flex;
-    gap: 1rem;
-}
-
-header nav {
-    display: flex;
-    gap: 1rem;
-    grid-column: 2; 
+    gap: 2rem;
 }
 
 header nav a {
-    font-size: 24px;
+    font-size: 16px;
     text-decoration: none;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
+    color: var(--color);
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+    font-family: "Unscii 16 Full", monospace;
+}
+
+header nav a:hover {
+    color: var(--accent);
+    text-shadow: 0 0 8px rgba(134, 77, 24, 0.5);
 }
 
 
 main {
-    margin-top: 50px;
-    margin-left: 120px;
+    margin-top: 30px;
+    padding: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+main h1, main h2, main h3 {
+    color: var(--color);
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
 }
 
 footer {
     bottom: 0px;
     position: fixed;
-    padding: 5px;
+    padding: 15px;
     text-align: center;
     background-color: var(--header-color);
+    border-top: 4px solid var(--primary-brown);
     width: 100%;
+    color: var(--color);
+    font-size: 13px;
 }
 
 /** EVERY OTHER ELEMENT **/
 
 a {
-    color: var(--a);
-    padding: 5px;
+    color: var(--link-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    color: var(--link-hover);
 }
 
 code {
-  border-radius: 3px;
-  font-family: 'Source Code Pro', sans-serif;
-  padding: 0 3px;
-  background-color: var(--header-color);
+    font-family: 'Source Code Pro', sans-serif;
+    padding: 4px 8px;
+    background-color: var(--bg-secondary);
+    color: var(--accent);
+    border: 1px solid var(--border-color);
 }
 
-input, select {
-    padding: 10px;
-    font-size: 15px; 
-    min-height: 38px;
-    background-color: var(--header-color);
-    border: 1px solid var(--bg);
-    border-radius: var(--border-radius);
+pre {
+    background-color: var(--bg-secondary);
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    overflow-x: auto;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    border: none;
+}
+
+input, select, textarea {
+    padding: 12px;
+    font-size: 15px;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
     font-family: "Unscii 16 Full", monospace;
-    color: var(--a)
+    color: var(--color);
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 300px;
 }
 
-input::placeholder {
-    color: var(--a);
+textarea {
+    min-height: 80px;
+    resize: vertical;
 }
 
-input:focus {
-    border: 1px solid var(--a);
+input::placeholder, textarea::placeholder {
+    color: var(--color-secondary);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
     outline: none;
+    background-color: var(--card-bg);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color);
+    font-weight: bold;
 }
 
 button {
-    padding: 8px 20px 8px 20px;
-    background-color: var(--a);
-    font-family: "Unscii 16 Full";
-    font-size: 18px;
+    padding: 12px 24px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 2px solid var(--button-border);
+    font-family: "Unscii 16 Full", monospace;
+    font-size: 16px;
     cursor: pointer;
-    color: var(--btn-color);
-    border: 2px solid var(--bnt-border);
-    border-radius: var(--border-radius);
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: var(--box-shadow-3d);
+    transform: translateY(0);
+    position: relative;
 }
 
-button:hover {
-    background-color: var(--darker);
+button:hover:not(:disabled) {
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-3d-hover);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: var(--box-shadow-3d-active);
+}
+
+button:disabled {
+    background-color: var(--bg-secondary);
+    color: var(--color-secondary);
+    cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+}
+
+button:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 form {
-    display: block;
-    margin-bottom: 10px; /* spacing between elements */
+    background-color: var(--card-bg);
+    border: 3px solid var(--border-color);
+    padding: 30px;
+    max-width: 500px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-form > * {
-    margin-top: 10px;
+form h2 {
+    color: var(--color);
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+}
+
+form p {
+    color: var(--color-secondary);
+    font-size: 14px;
+}
+
+form p a {
+    color: var(--link-color);
 }
 
 /** CLASSES AND IDs **/
@@ -156,61 +255,131 @@ form > * {
 }
 
 .server {
-    background-color: var(--header-color);
-    padding: 15px;
-    border-radius: var(--border-radius);
+    background-color: var(--card-bg);
+    border: 3px solid var(--card-border);
+    padding: 20px;
     display: flex;
     flex-direction: row;
-    max-width: 500px;
-    max-height: 200px;
-    margin: 10px;
+    max-width: 700px;
+    margin: 20px auto;
+    transition: all 0.2s ease;
+}
+
+.server:hover {
+    border-color: var(--accent);
+}
+
+.server * {
+    margin: 8px;
 }
 
 .server h2 {
     font-family: "Unscii 16 Full", monospace;
-    font-size: 28px;
-}
-
-.server * {
-    margin: 5px;
+    font-size: 24px;
+    color: var(--color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    letter-spacing: 1px;
 }
 
 .server img {
-    max-width: 200px;
-    max-height: 450px;
-    border-radius: 5px;
-    flex: 1;
+    max-width: 160px;
+    max-height: 160px;
+    width: 160px;
+    height: 160px;
+    border: 2px solid var(--border-color);
+    object-fit: cover;
+    flex: 0 0 auto;
 }
 
-.server info {
-    flex: 2;
+.server .info {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.server .playerCount {
+    color: var(--players-color);
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.server button {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
 }
 
 .servers_list {
     display: flex;
-}
-
-.servers {
-    flex: 2;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 
 .filters {
-    flex: 1;
-    height: 1200px;
-    background-color: var(--header-color);
-    border-radius: var(--border-radius);
-    max-width: 350px;
-    padding: 50px;
+    flex: 0 0 30%;
+    max-width: 30%;
+    min-width: 240px;
+    background-color: var(--card-bg);
+    border: 3px solid var(--card-border);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.servers {
+    flex: 1 1 70%;
+    min-width: 360px;
+}
+
+.filters h2 {
+    color: var(--color);
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+}
+
+.filters p {
+    margin-bottom: 15px;
+    color: var(--color-secondary);
+}
+
+.filters select, .filters input {
+    width: 100%;
+    margin-top: 5px;
 }
 
 .event {
-    background-color: var(--event);
-    padding: 10px;
-    border-radius: var(--border-radius);
+    background-color: var(--event-bg);
+    color: var(--event-text);
+    padding: 8px 16px;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 5px 0;
 }
 
 .center-me-pls {
-    justify-content: center;  /* vertical center */
-    align-items: center;      /* horizontal center */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    flex-direction: column;
     text-align: center;
+    background-color: var(--card-bg);
+    border: 3px solid var(--border-color);
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 30px;
+}
+
+.center-me-pls h3 {
+    color: var(--color);
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }

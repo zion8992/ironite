@@ -3,10 +3,65 @@
 <div class="servers_list">
     <div class="filters">
         <h2>Filters</h2>
-        <p>Region: Africa<br>
-        Whitelist: --<br>
-        Version: 0.5.2<br>
-    </p>
+        <p>
+            <label>Search</label>
+            <input type="search" placeholder="Search servers...">
+        </p>
+        <p>
+            <label>Region</label>
+            <select>
+                <option>All</option>
+                <option>NA</option>
+                <option>EU</option>
+                <option>Asia</option>
+                <option>Africa</option>
+            </select>
+        </p>
+        <p>
+            <label>Version</label>
+            <select>
+                <option>Any</option>
+                <option>1.0</option>
+                <option>1.1</option>
+                <option>1.2</option>
+            </select>
+        </p>
+        <p>
+            <label>Players (max)</label>
+            <input type="range" min="0" max="10000" value="1000">
+        </p>
+        <p>
+            <label>Whitelist</label>
+            <select>
+                <option>Any</option>
+                <option>Open</option>
+                <option>Whitelist</option>
+            </select>
+        </p>
+        <p>
+            <label>Gamemode</label>
+            <div>
+                <label><input type="checkbox"> Survival</label><br>
+                <label><input type="checkbox"> Creative</label><br>
+                <label><input type="checkbox"> PvP</label>
+            </div>
+        </p>
+        <p>
+            <label>Tags</label>
+            <input type="text" placeholder="e.g. economy, factions">
+        </p>
+        <p>
+            <label>Sort</label>
+            <select>
+                <option>Featured</option>
+                <option>Most Players</option>
+                <option>Newest</option>
+            </select>
+        </p>
+        <p>
+            <button>Apply Filters</button>
+            <button type="button">Reset</button>
+        </p>
     </div>
 
     <div class="servers">

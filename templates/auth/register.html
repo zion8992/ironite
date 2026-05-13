@@ -5,42 +5,89 @@
     <form action="/register" method="post">
         <input type="text" name="username" placeholder="Username" required /> <br>
         <input type="text" name="email" placeholder="Email" required /> <br>
-        <input type="password" name="password" placeholder="Secure Password" required /> <br>
+        <input type="password" id="password" name="password" placeholder="Secure Password" required /> <br>
         <button type="submit">Register</button>
     </form>
+
+    <p id="pass-status"></p>
 </div>
 
-<p id="pass-status"></p>
-
 <script>
-const passwordInput = document.querySelector('input[name="password"]');
-const status = document.getElementById('pass-status');
+const passwordInput = document.getElementById("password");
+const passStatus = document.getElementById("pass-status");
 
-passwordInput.addEventListener('input', () => {
-    const val = passwordInput.value;
+passwordInput.addEventListener("input", () => {
+	const password = passwordInput.value;
 
-    const lengthOK = val.length >= 11;
-    const upper = (val.match(/[A-Z]/g) || []).length;
-    const lower = (val.match(/[a-z]/g) || []).length;
-    const symbols = (val.match(/[^A-Za-z0-9]/g) || []).length;
-    const numbers = (val.match(/[0-9]/g) || []).length;
+	const missing = [];
+	const forbidden = [];
 
-    const groups = [
-        upper >= 2,
-        lower >= 2,
-        symbols >= 2
-    ].filter(Boolean).length;
+	// Length
+	if (password.length < 11) {
+		missing.push("have at least 11 characters");
+	}
 
-    const groupsOK = groups >= 2;
-    const numbersOK = numbers >= 4;
+	// Count character types
+	let upper = 0;
+	let lower = 0;
+	let digits = 0;
+	let symbols = 0;
 
-    if (lengthOK && groupsOK && numbersOK) {
-        status.textContent = "Strong password";
-        status.style.color = "green";
-    } else {
-        status.textContent = "Password must:\n- be 11+ chars\n- have 2 upper case letters, lower case letters, symbols and 4 numbers";
-        status.style.color = "red";
-    }
+	for (const c of password) {
+		if (c === "/" || c === "\\") {
+			forbidden.push("cannot have slashes or backslashes");
+			continue;
+		}
+
+		if (c >= "A" && c <= "Z") {
+			upper++;
+		} else if (c >= "a" && c <= "z") {
+			lower++;
+		} else if (c >= "0" && c <= "9") {
+			digits++;
+		} else {
+			symbols++;
+		}
+	}
+
+	if (upper < 2) {
+		missing.push("have 2 UPPERCASE letters");
+	}
+
+	if (lower < 1) {
+		missing.push("have 1 lowercase letter");
+	}
+
+	if (digits < 4) {
+		missing.push("have 4 digits");
+	}
+
+	if (symbols < 1) {
+		missing.push("have 1 symbol");
+	}
+
+	// Build message
+	const messages = [];
+
+	if (missing.length > 0) {
+		messages.push(
+			"Your password must " + missing.join(", ")
+		);
+	}
+
+	if (forbidden.length > 0) {
+		messages.push(
+			"Your password cannot have slashes or backslashes"
+		);
+	}
+
+	if (messages.length === 0) {
+		passStatus.textContent = "Password meets all requirements";
+		passStatus.style.color = "green";
+	} else {
+		passStatus.textContent = messages.join(" | ");
+		passStatus.style.color = "red";
+	}
 });
 </script>
 {{ end }}
